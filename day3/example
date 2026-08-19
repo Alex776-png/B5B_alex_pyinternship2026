@@ -1,3 +1,0 @@
-numbers = [12, 67, 45, 89, 23, 90, 5]
-result = sorted([n for n in numbers if n > 50], reverse=True)
-print(result)

@@ -1,3 +1,0 @@
-marks = [45, 90, 33, 78, 55]
-result = ["Pass" if m >= 40 else "Fail" for m in marks]
-print(result)
