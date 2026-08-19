@@ -1,7 +1,5 @@
-students=[("Riya", 88), ("Aman", 95), ("Sara", 72)]
+std = [("Riya", 88), ("Aman", 95), ("Sara", 72)]
 
-students= list(students)
+std = sorted(std, key=lambda item: item[1], reverse=True)
 
-students=sorted(key=lambda student: student[1], reverse=True)
-
-print('Sorted : ',students)
+print(std)
