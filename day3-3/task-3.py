@@ -1,26 +1,26 @@
 library = {
-    "B101": {
-        "title": "Python Basics",
-        "author": "John Smith",
+    "A10": {
+        "title": "Python",
+        "author": "Johan Libert",
         "copies": 5
     },
-    "B102": {
-        "title": "Data Structures",
-        "author": "Alice Brown",
+    "A11": {
+        "title": "Java",
+        "author": "Chris Norington",
         "copies": 3
     },
-    "B103": {
-        "title": "Machine Learning",
-        "author": "David Lee",
+    "A12": {
+        "title": "Devops",
+        "author": "Bruce Lee",
         "copies": 2
     }
 }
 
 # Issue book B102
-book_id = "B102"
+issued_id = "A12"
 
-if library[book_id]["copies"] > 0:
-    library[book_id]["copies"] -= 1
+if library[issued_id]["copies"] > 0:
+    library[issued_id]["copies"] -= 1
     print("Book issued successfully.")
 else:
     print("Book is not available.")

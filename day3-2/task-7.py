@@ -1,8 +1,7 @@
-def to_frozenset(items):
+def fun_frozenset(items):
     return frozenset(items)
 
-
 numbers = [1, 2, 3, 2, 4, 1]
-result = to_frozenset(numbers)
+result = fun_frozenset(numbers)
 
-print("Frozenset:", result)
+print("Frozenset :", result)

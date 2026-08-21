@@ -1,10 +1,10 @@
 products = {
-    "Laptop": 750,
-    "Mouse": 25,
-    "Keyboard": 120,
-    "Monitor": 300,
-    "Headphones": 150,
-    "USB Cable": 15
+    "Laptop": 10000,
+    "Mouse": 120,
+    "Keyboard": 800,
+    "Monitor": 12000,
+    "Headphones": 670,
+    "USB Cable": 20
 }
 
 expensive_products = {

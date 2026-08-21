@@ -2,7 +2,6 @@ admin_permissions = {
     "read",
     "write",
     "delete",
-    "manage_users"
 }
 
 editor_permissions = {
@@ -13,7 +12,7 @@ editor_permissions = {
 # An editor user has only editor permissions
 user_permissions = editor_permissions
 
-required_permissions = {"delete", "manage_users"}
+required_permissions = {"delete"}
 
 if required_permissions.issubset(user_permissions):
     print("User can perform the admin action.")

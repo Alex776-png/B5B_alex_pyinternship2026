@@ -1,4 +1,4 @@
-words = ["apple", "ant", "banana", "bat", "cat", "carrot"]
+words = ["alpha", "ant", "browns", "bat", "chris", "carrot"]
 
 grouped_words = {}
 

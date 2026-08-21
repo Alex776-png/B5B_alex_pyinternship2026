@@ -1,4 +1,4 @@
-def marks_summary(marks):
+def marks_sum(marks):
     lowest = min(marks)
     highest = max(marks)
     average = sum(marks) / len(marks)
@@ -7,8 +7,8 @@ def marks_summary(marks):
 
 marks = [78, 85, 92, 67, 88]
 
-lowest, highest, average = marks_summary(marks)
+lowest, highest, average = marks_sum(marks)
 
-print("Lowest:", lowest)
-print("Highest:", highest)
-print("Average:", average)
+print("Lowest :", lowest)
+print("Highest :", highest)
+print("Average :", average)
