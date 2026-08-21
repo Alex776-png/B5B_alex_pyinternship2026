@@ -3,17 +3,21 @@ class Money:
         self.amount = amount
         self.currency = currency
 
-    def _check_currency(self, other):
+    def check_currency(self, other):
         if self.currency != other.currency:
-            raise ValueError("Cannot compare different currencies.")
+            raise ValueError("Currencies are different")
 
     def __lt__(self, other):
-        self._check_currency(other)
+        self.check_currency(other)
         return self.amount < other.amount
 
     def __gt__(self, other):
-        self._check_currency(other)
+        self.check_currency(other)
         return self.amount > other.amount
 
-    def __str__(self):
-        return f"{self.amount} {self.currency}"
+
+m1 = Money(500, "USD")
+m2 = Money(700, "USD")
+
+print(m1 < m2)
+print(m1 > m2)

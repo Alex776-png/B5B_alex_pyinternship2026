@@ -10,7 +10,7 @@ class Library:
             self.__books.remove(title)
             print(f"'{title}' removed from the library.")
         else:
-            print(f"'{title}' was not found in the library.")
+            print(f"'{title}' wasn't found in the library.")
 
     def list_books(self):
         if self.__books:

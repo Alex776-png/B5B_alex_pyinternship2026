@@ -15,4 +15,4 @@ counter3 = Counter()
 counter4 = Counter()
 counter5 = Counter()
 
-print("Total Counter objects:", Counter.get_count())
+print("Total Counter :", Counter.get_count())

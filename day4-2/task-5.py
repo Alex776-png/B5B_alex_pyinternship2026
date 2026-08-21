@@ -1,6 +1,5 @@
 mode = "global"
 
-
 def outer():
     mode = "outer"
 

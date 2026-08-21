@@ -1,6 +1,6 @@
 default_settings = {
     "theme": "light",
-    "language": "English",
+    "language": "Russian",
     "notifications": True,
     "font_size": 14
 }

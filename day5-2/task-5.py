@@ -20,6 +20,6 @@ class SportsCar(Car):
         print("Top Speed:", self.top_speed, "km/h")
 
 
-sports_car = SportsCar("Ferrari", "488 GTB", 330)
+sports_car = SportsCar("Ferrari", "F40", 330)
 
 sports_car.show_info()

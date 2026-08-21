@@ -1,5 +1,3 @@
-# 1. Function using normal parameter, *args, and **kwargs
-
 def build_invoice(customer_name, *args, **kwargs):
     total = sum(args)
 
@@ -11,7 +9,7 @@ def build_invoice(customer_name, *args, **kwargs):
 
 
 build_invoice(
-    "Rahul",
+    "Musashi Tsukiyama",
     100, 250, 150,
     discount=20,
     tax=50

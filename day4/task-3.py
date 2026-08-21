@@ -1,6 +1,4 @@
-# 3. Using map() and lambda to convert Celsius to Fahrenheit
-
-celsius = [0, 10, 20, 30, 40]
+celsius = [-12, 10, 21, 30, 39]
 
 fahrenheit = list(
     map(lambda c: (c * 9/5) + 32, celsius)

@@ -16,10 +16,8 @@ employee = Employee(50000)
 
 print("Original salary:", employee.get_salary())
 
-# Valid increase
-employee.set_salary(60000)
+employee.set_salary(60000) #valid
 print("After increase:", employee.get_salary())
 
-# Invalid decrease
-employee.set_salary(40000)
+employee.set_salary(40000) #invalid
 print("After decrease attempt:", employee.get_salary())

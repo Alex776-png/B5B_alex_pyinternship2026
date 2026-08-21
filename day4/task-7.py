@@ -1,7 +1,4 @@
-# 7. Timer decorator
-
 import time
-
 
 def timer(function):
     def wrapper(*args, **kwargs):

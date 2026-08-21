@@ -1,7 +1,6 @@
 class InvalidAgeError(Exception):
     pass
 
-
 def register_user(age):
     if age < 0 or age > 120:
         raise InvalidAgeError(
@@ -9,7 +8,6 @@ def register_user(age):
         )
 
     print(f"User registered successfully with age {age}.")
-
 
 register_user(25)
 

@@ -20,4 +20,4 @@ accounts = [
 ]
 
 for account in accounts:
-    print("Interest rate:", account.get_interest_rate(), "%")
+    print("Interest rate :", account.get_interest_rate(), "%")

@@ -1,17 +1,17 @@
 def make_greeting(language):
     def greet(name):
-        if language == "english":
-            print(f"Hello, {name}")
-        elif language == "hindi":
-            print(f"Namaste, {name}")
+        if language == "English":
+            print(f"Hello {name}")
+        elif language == "Spanish":
+            print(f"Hola {name}")
         else:
             print("Language not supported")
 
     return greet
 
 
-english_greeting = make_greeting("english")
-hindi_greeting = make_greeting("hindi")
+english_greeting = make_greeting("English")
+spanish_greeting = make_greeting("Spanish")
 
-english_greeting("Rahul")
-hindi_greeting("Amit")
+english_greeting("Aristotle")
+spanish_greeting("Jaquel")

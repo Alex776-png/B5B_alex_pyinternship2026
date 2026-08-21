@@ -14,9 +14,6 @@ def process_order(order):
     finally:
         print("Processing complete")
 
+process_order({"item": "Laptop", "price": 50000}) #valid
 
-# Valid order
-process_order({"item": "Laptop", "price": 50000})
-
-# Missing key
-process_order({"item": "Laptop"})
+process_order({"item": "Laptop"}) #missing

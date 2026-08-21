@@ -1,5 +1,3 @@
-# 8. require_positive decorator
-
 def require_positive(function):
     def wrapper(*args, **kwargs):
         # Check positional arguments
@@ -24,6 +22,6 @@ def divide(a, b):
     return a / b
 
 
-print(divide(10, 2))    # Valid
-print(divide(10, 0))    # Error, function is not called
-print(divide(-10, 2))   # Error, function is not called
+print(divide(10, 2))   
+print(divide(10, 0))   
+print(divide(-10, 2))  

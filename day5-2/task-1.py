@@ -13,7 +13,7 @@ class Student(Person):
         print(f"{self.name} is studying {self.course}.")
 
 
-student = Student("Rahul", 20, "Computer Science")
+student = Student("Rachel", 20, "Computer Science")
 
 print(student.name)
 print(student.age)

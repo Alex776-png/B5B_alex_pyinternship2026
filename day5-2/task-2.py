@@ -20,5 +20,5 @@ class Designer(Employee):
 developer = Developer()
 designer = Designer()
 
-print("Developer salary:", developer.calculate_salary())
-print("Designer salary:", designer.calculate_salary())
+print("Developer salary :", developer.calculate_salary())
+print("Designer salary :", designer.calculate_salary())

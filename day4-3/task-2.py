@@ -7,5 +7,5 @@ def get_value(my_list, index):
 
 numbers = [10, 20, 30]
 
-print(get_value(numbers, 1))   # 20
-print(get_value(numbers, 5))   # None
+print(get_value(numbers, 1))  
+print(get_value(numbers, 5))   

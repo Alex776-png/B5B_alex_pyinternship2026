@@ -1,14 +1,13 @@
 employees = {
-    "Riya": 55000,
-    "Aman": 75000,
-    "Priya": 62000,
-    "Rahul": 90000,
-    "Neha": 80000,
-    "Karan": 65000
+    "Alice": 55000,
+    "Norington": 75000,
+    "Paul": 62000,
+    "Fernando": 90000,
+    "Gonsalvis": 80000,
+    "Yeager": 65000
 }
 
-sorted_employees = sorted(
-    employees.items(),
+sorted_employees = sorted(employees.items(),
     key=lambda item: item[1],
     reverse=True
 )

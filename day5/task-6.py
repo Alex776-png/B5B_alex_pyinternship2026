@@ -13,8 +13,8 @@ class Rectangle:
         return self.area() == other.area()
 
 
-rectangle1 = Rectangle(4, 6)   # Area = 24
-rectangle2 = Rectangle(3, 8)   # Area = 24
+rectangle1 = Rectangle(4, 6)   
+rectangle2 = Rectangle(3, 8)   
 
 print("Rectangle 1 area:", rectangle1.area())
 print("Rectangle 2 area:", rectangle2.area())
