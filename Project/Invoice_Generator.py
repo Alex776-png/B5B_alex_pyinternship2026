@@ -1,223 +1,179 @@
+import tkinter as tk
+from tkinter import messagebox
+from fpdf import FPDF
+from openpyxl import Workbook, load_workbook
 from datetime import datetime
+import os
+import sys
 
 
-def get_number(prompt, number_type=float):
-    while True:
+class InvoiceGenerator:
+    def __init__(self, root):
+        self.root = root
+        self.root.title("Simple Invoice Generator")
+        self.root.geometry("480x620")
+        self.root.resizable(False, False)
+
+        # Title
+        title = tk.Label(root, text="INVOICE GENERATOR", font=("Arial", 18, "bold"), fg="#1a5276")
+        title.pack(pady=15)
+
+        # Frame for all input fields
+        form = tk.Frame(root)
+        form.pack(pady=5)
+
+        # All labels and entry boxes
+        self.fields = {}
+        labels = [
+            "Client Name",
+            "Address",
+            "Item Description",
+            "Quantity",
+            "Rate per Day",
+            "Customs Ref",
+            "HS Code",
+            "Country",
+            "Status"
+        ]
+
+        for i, text in enumerate(labels):
+            tk.Label(form, text=text + ":", font=("Arial", 10), anchor="w", width=18).grid(row=i, column=0, pady=6, sticky="w")
+            entry = tk.Entry(form, width=32, font=("Arial", 10))
+            entry.grid(row=i, column=1, pady=6, padx=5)
+            self.fields[text] = entry
+
+        # Buttons Frame
+        btn_frame = tk.Frame(root)
+        btn_frame.pack(pady=25)
+
+        tk.Button(btn_frame, text="Invoice", width=12, bg="#27ae60", fg="white",
+                  font=("Arial", 11, "bold"), command=self.generate_invoice).grid(row=0, column=0, padx=8)
+
+        tk.Button(btn_frame, text="Reset", width=12, bg="#f39c12", fg="white",
+                  font=("Arial", 11, "bold"), command=self.reset_fields).grid(row=0, column=1, padx=8)
+
+        tk.Button(btn_frame, text="Exit", width=12, bg="#c0392b", fg="white",
+                  font=("Arial", 11, "bold"), command=self.root.destroy).grid(row=0, column=2, padx=8)
+
+    def get_data(self):
+        """Collect all values from the entry boxes"""
+        data = {}
+        for key, entry in self.fields.items():
+            data[key] = entry.get().strip()
+        return data
+
+    def generate_invoice(self):
+        data = self.get_data()
+
+        # Basic validation
+        if not data["Client Name"] or not data["Item Description"]:
+            messagebox.showerror("Error", "Client Name and Item Description are required!")
+            return
+
         try:
-            value = number_type(input(prompt))
-            if value < 0:
-                print("Please enter a positive value.")
-                continue
-            return value
+            qty = float(data["Quantity"])
+            rate = float(data["Rate per Day"])
+            total = qty * rate
         except ValueError:
-            print("Invalid input. Please enter a number.")
+            messagebox.showerror("Error", "Quantity and Rate per Day must be numbers!")
+            return
+
+        # Create Invoice Number & Date
+        now = datetime.now()
+        invoice_no = "INV-" + now.strftime("%Y%m%d%H%M%S")
+        invoice_date = now.strftime("%d-%m-%Y")
+
+        # ---------- Create PDF ----------
+        pdf = FPDF()
+        pdf.add_page()
+        pdf.set_font("Arial", "B", 20)
+        pdf.cell(0, 15, "INVOICE", ln=True, align="C")
+        pdf.ln(5)
+
+        pdf.set_font("Arial", size=11)
+        pdf.cell(0, 8, f"Invoice No : {invoice_no}", ln=True)
+        pdf.cell(0, 8, f"Date       : {invoice_date}", ln=True)
+        pdf.ln(8)
+
+        pdf.set_font("Arial", "B", 12)
+        pdf.cell(0, 8, "Client Details", ln=True)
+        pdf.set_font("Arial", size=11)
+        pdf.cell(0, 7, f"Name    : {data['Client Name']}", ln=True)
+        pdf.multi_cell(0, 7, f"Address : {data['Address']}")
+        pdf.ln(5)
+
+        pdf.set_font("Arial", "B", 12)
+        pdf.cell(0, 8, "Item Details", ln=True)
+        pdf.set_font("Arial", size=11)
+        pdf.cell(0, 7, f"Description : {data['Item Description']}", ln=True)
+        pdf.cell(0, 7, f"Quantity    : {data['Quantity']}", ln=True)
+        pdf.cell(0, 7, f"Rate/Day    : {data['Rate per Day']}", ln=True)
+        pdf.cell(0, 7, f"Total       : {total:.2f}", ln=True)
+        pdf.ln(5)
+
+        pdf.set_font("Arial", "B", 12)
+        pdf.cell(0, 8, "Customs & Shipping Info", ln=True)
+        pdf.set_font("Arial", size=11)
+        pdf.cell(0, 7, f"Customs Ref : {data['Customs Ref']}", ln=True)
+        pdf.cell(0, 7, f"HS Code     : {data['HS Code']}", ln=True)
+        pdf.cell(0, 7, f"Country     : {data['Country']}", ln=True)
+        pdf.cell(0, 7, f"Status      : {data['Status']}", ln=True)
+
+        pdf.ln(15)
+        pdf.set_font("Arial", "I", 10)
+        pdf.cell(0, 8, "Thank you for your business!", ln=True, align="C")
+
+        # Save PDF
+        pdf_filename = f"Invoice_{invoice_no}.pdf"
+        pdf.output(pdf_filename)
+
+        # ---------- Save to Excel ----------
+        excel_file = "Invoices_Data.xlsx"
+
+        if not os.path.exists(excel_file):
+            # Create new workbook if file does not exist
+            wb = Workbook()
+            ws = wb.active
+            ws.title = "Invoices"
+            headers = ["Invoice No", "Date", "Client Name", "Address", "Item Description",
+                       "Quantity", "Rate per Day", "Total", "Customs Ref", "HS Code",
+                       "Country", "Status"]
+            ws.append(headers)
+        else:
+            wb = load_workbook(excel_file)
+            ws = wb.active
+
+        # Add the new row
+        row = [
+            invoice_no,
+            invoice_date,
+            data["Client Name"],
+            data["Address"],
+            data["Item Description"],
+            data["Quantity"],
+            data["Rate per Day"],
+            total,
+            data["Customs Ref"],
+            data["HS Code"],
+            data["Country"],
+            data["Status"]
+        ]
+        ws.append(row)
+        wb.save(excel_file)
+
+        messagebox.showinfo("Success",
+                            f"Invoice generated successfully!\n\n"
+                            f"PDF  → {pdf_filename}\n"
+                            f"Excel → {excel_file}")
+
+    def reset_fields(self):
+        """Clear all entry boxes"""
+        for entry in self.fields.values():
+            entry.delete(0, tk.END)
 
 
-def print_line():
-    print("-" * 70)
-
-
-def generate_invoice():
-    print("\n")
-    print("=" * 70)
-    print("                    INVOICE GENERATOR")
-    print("=" * 70)
-
-    # --------------------------------------------------
-    # Business details
-    # --------------------------------------------------
-
-    print("\nBUSINESS DETAILS")
-    print_line()
-
-    business_name = input("Business Name: ")
-    business_phone = input("Business Phone: ")
-    business_address = input("Business Address: ")
-    gstin = input("GSTIN (optional): ")
-
-    # --------------------------------------------------
-    # Customer details
-    # --------------------------------------------------
-
-    print("\nCUSTOMER DETAILS")
-    print_line()
-
-    customer_name = input("Customer Name: ")
-    customer_phone = input("Customer Phone: ")
-    customer_address = input("Customer Address: ")
-
-    # --------------------------------------------------
-    # Invoice details
-    # --------------------------------------------------
-
-    invoice_number = input("Invoice Number: ")
-
-    if not invoice_number:
-        invoice_number = "INV-" + datetime.now().strftime("%Y%m%d%H%M%S")
-
-    invoice_date = input("Invoice Date (DD-MM-YYYY): ")
-
-    if not invoice_date:
-        invoice_date = datetime.now().strftime("%d-%m-%Y")
-
-    # --------------------------------------------------
-    # Products
-    # --------------------------------------------------
-
-    print("\nPRODUCT / SERVICE DETAILS")
-    print_line()
-
-    items = []
-
-    number_of_items = int(
-        get_number(
-            "How many products/services? ",
-            int
-        )
-    )
-
-    for i in range(number_of_items):
-        print(f"\nItem {i + 1}")
-
-        description = input("Product/Service Name: ")
-
-        quantity = get_number("Quantity: ")
-        price = get_number("Price per unit: ")
-
-        amount = quantity * price
-
-        items.append({
-            "description": description,
-            "quantity": quantity,
-            "price": price,
-            "amount": amount
-        })
-
-    # --------------------------------------------------
-    # Calculations
-    # --------------------------------------------------
-
-    subtotal = sum(item["amount"] for item in items)
-
-    print("\nTAX & DISCOUNT")
-    print_line()
-
-    discount_percent = get_number(
-        "Discount (%): "
-    )
-
-    gst_percent = get_number(
-        "GST (%): "
-    )
-
-    discount_amount = subtotal * discount_percent / 100
-
-    taxable_amount = subtotal - discount_amount
-
-    gst_amount = taxable_amount * gst_percent / 100
-
-    grand_total = taxable_amount + gst_amount
-
-    # --------------------------------------------------
-    # PRINT INVOICE
-    # --------------------------------------------------
-
-    print("\n\n")
-    print("=" * 70)
-    print("                         INVOICE")
-    print("=" * 70)
-
-    print(f"Invoice No : {invoice_number}")
-    print(f"Date       : {invoice_date}")
-
-    print_line()
-
-    print("BUSINESS")
-    print(f"Name       : {business_name}")
-    print(f"Phone      : {business_phone}")
-    print(f"Address    : {business_address}")
-
-    if gstin:
-        print(f"GSTIN      : {gstin}")
-
-    print_line()
-
-    print("BILL TO")
-    print(f"Name       : {customer_name}")
-    print(f"Phone      : {customer_phone}")
-    print(f"Address    : {customer_address}")
-
-    print_line()
-
-    # --------------------------------------------------
-    # Product table
-    # --------------------------------------------------
-
-    print(
-        f"{'No.':<5}"
-        f"{'Product/Service':<30}"
-        f"{'Qty':>8}"
-        f"{'Price':>12}"
-        f"{'Amount':>12}"
-    )
-
-    print_line()
-
-    for i, item in enumerate(items, start=1):
-        print(
-            f"{i:<5}"
-            f"{item['description'][:29]:<30}"
-            f"{item['quantity']:>8.2f}"
-            f"{item['price']:>12.2f}"
-            f"{item['amount']:>12.2f}"
-        )
-
-    print_line()
-
-    # --------------------------------------------------
-    # Totals
-    # --------------------------------------------------
-
-    print(f"{'Subtotal':>55} : ₹{subtotal:,.2f}")
-    print(
-        f"{'Discount':>55} : "
-        f"₹{discount_amount:,.2f}"
-    )
-    print(
-        f"{'Taxable Amount':>55} : "
-        f"₹{taxable_amount:,.2f}"
-    )
-    print(
-        f"{'GST (' + str(gst_percent) + '%)':>55} : "
-        f"₹{gst_amount:,.2f}"
-    )
-
-    print_line()
-
-    print(
-        f"{'GRAND TOTAL':>55} : "
-        f"₹{grand_total:,.2f}"
-    )
-
-    print("=" * 70)
-    print("                 THANK YOU FOR YOUR BUSINESS!")
-    print("=" * 70)
-
-    print("\n")
-
-
-# ------------------------------------------------------
-# PROGRAM START
-# ------------------------------------------------------
-
-while True:
-
-    generate_invoice()
-
-    again = input(
-        "Do you want to create another invoice? (y/n): "
-    ).lower()
-
-    if again != "y":
-        print("\nThank you. Goodbye!")
-        break
+# ---------- Main ----------
+if __name__ == "__main__":
+    root = tk.Tk()
+    app = InvoiceGenerator(root)
+    root.mainloop()
